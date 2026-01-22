@@ -1,0 +1,110 @@
+.page-wrapper{
+	width: 100vw;
+	height: 100vh;
+	background-color: #EEE;
+}
+
+.controls-window{
+	background-color: #FFF;
+	padding: 40px 10px 40px 10px;
+	width: 300px;
+	border-radius: 10px;
+	box-shadow: 5px 5px 5px 0px #DDD;
+}
+
+.controls-window .logo{
+	width: 75px;
+	height: 75px;
+	background-image: url("/src/img/test_logo.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-bottom: 15px;
+}
+
+.controls-window .iconed-input,
+.controls-window .simple-input{
+	margin-bottom: 5px;
+	overflow: hidden;
+	border-radius: 100px;
+	background-color: #EEE;
+	padding: 3px;
+}
+
+.controls-window .iconed-input .icon{
+	min-width: 30px;
+	max-width: 30px;
+	min-height: 30px;
+	max-height: 30px;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 10px;
+}
+
+.login-icon{
+	background-image: url("/src/img/login_avatar.png");
+	background-size: 70% !important;
+}
+
+.password-icon{
+	background-image: url("/src/img/password_avatar.png");
+	background-size: 65% !important;
+}
+
+.controls-window .iconed-input input[type="text"],
+.controls-window .iconed-input input[type="password"],
+.controls-window .simple-input input[type="text"]{
+	border: none;
+	background: none;
+	outline: none;
+	-webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 2px 5px 2px 0px;
+    width: 175px;
+}
+
+.controls-window .simple-input input[type="text"]{
+	padding: 5px 10px 5px 10px;
+	min-height: 30px;
+	max-height: 30px;
+	min-width: 180px;
+	max-width: 180px;
+}
+
+.controls-window .remember-me-block{
+	width: 100%;
+}
+
+.controls-window .action-button{
+	position: relative;
+	top: 0px;
+	background: none;
+	border: none;
+	outline: none;
+	background-color: #e592b8;
+	background: linear-gradient(45deg, #e592b8, #6cf5c2);
+	padding: 10px 20px 10px 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-radius: 10px;
+	cursor: pointer;
+	box-shadow: 2px 2px 2px 0px #DDD;
+}
+
+.controls-window .action-button:hover{
+	top: 1px;
+	box-shadow: 1px 1px 2px 0px #DDD;
+}
+
+.controls-window .register-link{
+	color: #e592b8;
+}
+
+.error-text{
+	max-width: 300px;
+	color: #F00;
+	font-weight: 600;
+	text-align: center;
+	margin: 0px 0px 10px 0px;
+}
