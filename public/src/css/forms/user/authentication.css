@@ -104,7 +104,10 @@
 .error-text{
 	max-width: 300px;
 	color: #F00;
-	font-weight: 600;
 	text-align: center;
 	margin: 0px 0px 10px 0px;
+	background-color: #FDD;
+	padding: 10px 15px 10px 15px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px 0px #DDD;
 }

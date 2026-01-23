@@ -11,7 +11,7 @@ use App\Models\User;
 class AuthController{
     
     // Register new user
-    public function register(Request $request){
+    public function register(Request $request): RedirectResponse{
 
         try{
 
@@ -25,33 +25,34 @@ class AuthController{
             ]);
 
             $user = User::create($valid);
-            
-            return [
-                "success" => true,
-                "message" => null,
-                "data" => [
-                    "redirect" => "/user/forms/registration/complete"
-                ]
-            ];
+            return redirect() -> route('user.forms.registration.complete');
 
-        } catch(ValidationException $e){
-            return [
-                "success" => false,
-                "message" => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
-                "data"    => null
-            ];
-        } catch(Throwable $e){
-            return [
-                "success" => false,
-                "message" => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
-                "data"    => null
-            ];
+        } // Validation error
+        catch(ValidationException $e){
+            return redirect() -> route('user.forms.registration', [
+                'error' => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
+                'prev_family' => $request['family'],
+                'prev_first_name' => $request['first_name'],
+                'prev_patronymic' => $request['patronymic'],
+                'prev_email' => $request['email'],
+                'prev_login' => $request['login']
+            ]);
+        } // Other errors 
+        catch(Throwable $e){
+            return redirect() -> route('user.forms.registration', [
+                'error' => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
+                'prev_family' => $request['family'],
+                'prev_first_name' => $request['first_name'],
+                'prev_patronymic' => $request['patronymic'],
+                'prev_email' => $request['email'],
+                'prev_login' => $request['login']
+            ]);
         }
 
     }
 
     // Authenticate user
-    public function authenticate(Request $request){
+    public function authenticate(Request $request): RedirectResponse{
 
         try{
 
@@ -60,48 +61,38 @@ class AuthController{
                 'password' => 'required'
             ]);
 
-            $by_email = [
-                'email'    => $valid['login'],
-                'password' => $valid['password']
-            ];
+            // Auth by login or email
+            if(Auth::attempt(['login' => $valid['login'], 'password' => $valid['password']]) || 
+               Auth::attempt(['email' => $valid['login'], 'password' => $valid['password']])){
 
-            $by_login = [
-                'login' => $valid['login'],
-                'password' => $valid['password']
-            ];
-
-            $remember = isset($request -> input()["remember"]) ? true : false;
-
-            if(Auth::attempt($by_email, $remember) || Auth::attempt($by_login, $remember)){
-                
                 $request -> session() -> regenerate();
-                return [
-                    'success' => true,
-                    'message' => null,
-                    'data' => [
-                        'redirect' => '/'
-                    ]
-                ];
+                return redirect() -> route('user.forms.master');
 
-            } else return [
-                "success" => false,
-                "message" => "Введены неверные учетные данные",
-                "data" => ""
-            ];
+            } else return redirect() -> route('user.forms.authentication', ['error' => 'Указаны неверные данные учетной записи']);
 
-        } catch(ValidationException $e){
-            return [
-                "success" => false,
-                "message" => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
-                "data"    => null
-            ];
-        } catch(Throwable $e){
-            return [
-                "success" => false,
-                "message" => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
-                "data"    => null
-            ];
+        } // Validation error
+        catch(ValidationException $e){
+            return redirect() -> route('user.forms.authentication', [
+                'error' => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
+            ]);
+        } // Other errors 
+        catch(Throwable $e){
+            return redirect() -> route('user.forms.authentication', [
+                'error' => preg_replace('/\s*\(and \d+ more errors?\)\s*/', '', $e -> getMessage()),
+            ]);
         }
+
+    }
+
+    // Logout user
+    public function logout(Request $request): RedirectResponse{
+
+        if(Auth::check()){
+            Auth::logout();
+            $request -> session() -> invalidate();
+            $request -> session() -> regenerateToken();
+            return redirect() -> route('user.forms.authentication');
+        } else return redirect() -> intended() -> route('user.forms.master');
 
     }
 

@@ -202,6 +202,8 @@ return [
         'email'      => 'Электронная почта',
         'login'      => 'Логин',
         'password'   => 'Пароль',
+        'new_password' => 'Новый пароль',
+        'new_password_repeat' => 'Новый пароль (повторно)'
     ],
 
 ];
